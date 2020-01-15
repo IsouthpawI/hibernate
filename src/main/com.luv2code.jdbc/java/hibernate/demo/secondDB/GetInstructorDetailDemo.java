@@ -6,7 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-public class DeleteDemo {
+public class GetInstructorDetailDemo {
 
     public static void main(String[] args) {
         SessionFactory factory = new Configuration()
@@ -20,24 +20,19 @@ public class DeleteDemo {
         try {
 
             // start transaction
-
             session.beginTransaction();
 
-            // get instructor by primary key / id
+            // get the instructor detail object
 
-            int theId = 1;
+            int theId = 2999;
+            InstructorDetail tempInstructorDetail = session.get(InstructorDetail.class, theId);
 
-            Instructor tempInstructor = session.get(Instructor.class, theId);
-            System.out.println("Found instructor " + tempInstructor);
+            // print the instructor detail
+            System.out.println("tempInstructorDetail: " + tempInstructorDetail);
 
-            // delete instructor
+            // print the associated instructor
+            System.out.println("the associated instructor: " + tempInstructorDetail.getInstructor());
 
-            if(tempInstructor != null ){
-
-                System.out.println("Deleting... " + tempInstructor);
-                session.delete(tempInstructor);
-
-            }
 
             // commit transaction
             System.out.println("Commit transaction");
@@ -45,8 +40,18 @@ public class DeleteDemo {
 
             System.out.println("Done");
 
-        } finally {
+        }
 
+        catch(Exception exc){
+            exc.printStackTrace();
+        }
+
+        finally {
+
+            // handle connection leak issue
+            session.close();
+
+            factory.close();
         }
     }
 }

@@ -53,6 +53,7 @@ public class CreateDemo {
             System.out.println("Saving instructor: " + tempInstructor);
             session.save(tempInstructor);
 
+            // commit transaction
             System.out.println("Commit transaction");
             session.getTransaction().commit();
 
